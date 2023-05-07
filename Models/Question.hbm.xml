@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2"
+                   assembly="Quiz_App"
+                   namespace="Quiz_App.Models">
+
+	<class name="Question">
+		<id name="Id" column="idQuestion">
+			<generator class="increment"/>
+		</id>
+		<property name="Content" column="Content"/>
+		<set name = "Answers" table = "Answer">
+			<key column = "Question_idQuestion"/>
+			<one-to-many class = "Question"/>
+		</set>
+	</class>
+
+</hibernate-mapping>

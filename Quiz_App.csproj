@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Models\Answer.hbm.xml" />
+    <None Remove="Models\Question.hbm.xml" />
+    <None Remove="Models\Quiz.hbm.xml" />
+    <None Remove="Models\User.hbm.xml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Models\Answer.hbm.xml" />
+    <EmbeddedResource Include="Models\Quiz.hbm.xml" />
+    <EmbeddedResource Include="Models\Question.hbm.xml" />
+    <EmbeddedResource Include="Models\User.hbm.xml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MySql.Data" Version="8.0.33" />
+    <PackageReference Include="NHibernate" Version="5.4.2" />
+  </ItemGroup>
+
+</Project>
