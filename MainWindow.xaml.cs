@@ -24,29 +24,112 @@ namespace Quiz_App
     /// </summary>
     public partial class MainWindow : Window
     {
+        private User User { set; get; }
 
+        private Configuration myConfiguration;
+        private ISessionFactory mySessionFactory;
+        private ISession mySession;
+
+        private bool isLoginMode = true;
         public MainWindow()
-        {
-            InitializeComponent();
-        }
+{
+    InitializeComponent();
+}
 
-        private void Window_MouseDown(object sender, MouseButtonEventArgs e)
+private void Window_MouseDown(object sender, MouseButtonEventArgs e)
+{
+    if (e.LeftButton == MouseButtonState.Pressed)
+    {
+        DragMove();
+    }
+}
+
+private void btnMinimize_Click(object sender, RoutedEventArgs e)
+{
+    WindowState = WindowState.Minimized;
+}
+
+private void btnClose_Click(object sender, RoutedEventArgs e)
+{
+    Application.Current.Shutdown();
+}
+
+        private void changeMode_Click(object sender, RoutedEventArgs e)
         {
-            if (e.LeftButton==MouseButtonState.Pressed)
+            isLoginMode = !isLoginMode;
+            if (isLoginMode)
             {
-                DragMove();
+                changeMode.Content = "Nie masz konta?";
+                submit.Content = "Zaloguj";
+            }
+            else
+            {
+                changeMode.Content = "Posiadasz już konto?";
+                submit.Content = "Zarejestruj";
             }
         }
 
-        private void btnMinimize_Click(object sender, RoutedEventArgs e) 
+        private void submit_Click(object sender, RoutedEventArgs e)
         {
-            WindowState = WindowState.Minimized;
+            myConfiguration = new Configuration();
+            myConfiguration.Configure();
+            mySessionFactory = myConfiguration.BuildSessionFactory();
+            mySession = mySessionFactory.OpenSession();
+
+
+            if (isLoginMode)
+            {
+                // List Users
+                using (mySession.BeginTransaction())
+                {
+                    IQuery query = mySession.CreateQuery("FROM Quiz_App.Models.User u WHERE u.Login= :login AND u.Password = :password");
+                    query.SetParameter("login", loginBox.Text);
+                    query.SetParameter("password", paswdBox.Password);
+                    object obj = query.UniqueResult();
+                    if (obj != null)
+                    {
+                        User = (User)obj;
+                    }
+                    mySession.Transaction.Commit();
+                }
+                if (User == null)
+                {
+                    MessageBox.Show("Wprowadzono niewłaściwe dane!", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.OK);
+                }
+                else
+                {
+                    MessageBox.Show("Witaj " + User.Login + "!", "Siema", MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.OK);
+
+                }
+            }
+            else
+            {
+                // Add Record
+                using (mySession.BeginTransaction())
+                {
+                    User user = new User { Login = loginBox.Text, Password = paswdBox.Password };
+                    mySession.Save(user);
+                    mySession.Transaction.Commit();
+                }
+            }
         }
 
-        private void btnClose_Click(object sender, RoutedEventArgs e)
+        private void gotFocusLoginBox(object sender, RoutedEventArgs e)
         {
-            Application.Current.Shutdown();
+            if (loginBox.Text == "Login")
+            {
+                loginBox.Text = string.Empty;
+            }
         }
 
+        private void lostFocusLoginBox(object sender, RoutedEventArgs e)
+        {
+            if (loginBox.Text == string.Empty)
+            {
+                loginBox.Text = "Login";
+            }
+        }
     }
 }
+
+
