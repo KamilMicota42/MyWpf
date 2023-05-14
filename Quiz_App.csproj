@@ -8,6 +8,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="images\key-icon.png" />
+    <None Remove="images\logo.png" />
+    <None Remove="images\logo.svg" />
+    <None Remove="images\perfect-score.svg" />
+    <None Remove="images\user-icon.png" />
     <None Remove="Models\Answer.hbm.xml" />
     <None Remove="Models\Question.hbm.xml" />
     <None Remove="Models\Quiz.hbm.xml" />
@@ -15,6 +20,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Page Remove="images\logo.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="images\key-icon.png" />
+    <Resource Include="images\logo.png" />
+    <Resource Include="images\perfect-score.svg" />
+    <Resource Include="images\user-icon.png" />
     <EmbeddedResource Include="Models\Answer.hbm.xml" />
     <EmbeddedResource Include="Models\Quiz.hbm.xml" />
     <EmbeddedResource Include="Models\Question.hbm.xml" />
@@ -22,8 +35,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.39" />
     <PackageReference Include="MySql.Data" Version="8.0.33" />
     <PackageReference Include="NHibernate" Version="5.4.2" />
+    <PackageReference Include="SharpVectors.Wpf" Version="1.8.1" />
+    <PackageReference Include="Svg" Version="3.4.4" />
+    <PackageReference Include="Svg.Skia" Version="0.5.18" />
   </ItemGroup>
 
 </Project>
